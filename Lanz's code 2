@@ -1,0 +1,62 @@
+import random
+
+class ChatBotData:
+    def __init__(self):
+        self.responses = {
+            "hello": ["Hi there!", "Hello!", "Greetings!"],
+            "name": ["I'm just a bot without a name.", "Call me whatever you like!"],
+            "bye": ["Goodbye!", "See you later!", "Take care!"],
+            "help": ["How can I assist you?", "What do you need help with?"],
+            "favorite": ["I really like", "I love"],
+            "anime": ["frieren", "lucky star"],
+            ("hello", "how"): ["Hi there! How can I help you today?", "Hello! What would you like to know?"],
+            ("how", "you"): ["I'm just a chatbot, but I'm doing well! How about you?", "I'm great! What about you?"],
+            ("what", "name"): ["I'm just a bot without a name, but you can call me Chatbot!", "You can call me whatever you like!"],
+            ("bye", "see"): ["Goodbye! Hope to chat again soon!", "See you later! Take care!"],
+            ("need", "help"): ["How can I assist you?", "What do you need help with?"],
+            ("pup", "account"): ["Try to email the pup for your account if possible", "If account problems have occurred please email the pup"],
+            ("no", "response"): ["Try to visit the Pup Sta Mesa if it hasn't any form of reply", "Visit the PUP Sta Mesa to talk about your account"],
+            ("how", "wait"): ["Wait for 7 working days"],
+        }
+
+    def get_response(self, user_input: str) -> str:
+        # Return a response based on keyword pairs found in user input.
+        user_input = user_input.lower().strip()
+        
+        # Split the input into words
+        words = user_input.split()
+        
+        # Check for keywords in the input
+        for word in words:
+            if word in self.responses:
+                return random.choice(self.responses[word])
+        
+        # Check for keyword pairs in the input
+        for i in range(len(words)):
+            for j in range(i + 1, len(words)):
+                pair = (words[i], words[j])
+                if pair in self.responses:
+                    return random.choice(self.responses[pair])
+        
+        return "I'm not sure I understand that."
+
+def user_input() -> str:
+    return input("You: ")
+
+def main() -> None:
+    print("Welcome to the chatbot! Type 'quit' to exit.")
+    chatbot = ChatBotData()
+    
+    while True:
+        user_input_text = user_input()
+        if user_input_text.lower() == 'quit':
+            print("Bot: Thank you for chatting! Goodbye!")
+            break
+        elif not user_input_text.strip():  # Handle empty input
+            print("Bot: Please say something!")
+        else:
+            response = chatbot.get_response(user_input_text)
+            print("Bot:", response)
+
+if __name__ == '__main__':
+    main()
