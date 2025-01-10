@@ -57,19 +57,28 @@ def validation(words: list)->list: # To suggest the most simillar word to the wr
 
     return final_words
 
-def user_input()->str:
+def introduction()->None:
     print("chatbot name: Hi my name is -----")
     print("chatbot name: You can ask me anything about -----")
+    print("chatbot name: Enter 'exit' to exit the program")
+
+def user_input()->str:
     question: str = input("user: ").upper()
     words = validation(question)
 
     return words
-def chatBotReply()-> str:
-    pass
+def chatBotReply(words: list)-> str:
+    words.reply
 
 def main()->None:
-    words = user_input()
-    chatBotReply(words)
+    introduction()
+    while True: 
+        words = user_input()
+        if words == 'EXIT':
+            print("chatbot name: Thank you for chatting with me!")
+            quit()
+        else:
+            chatBotReply(words)
 
 if __name__ == '__main__':
     main()
