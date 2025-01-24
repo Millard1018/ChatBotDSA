@@ -18,30 +18,32 @@ class chatBotData:
             data_keywords.append(key.split()) # If word is different but same meaning(synonyms) we can add that too
         # We can compare a specific word in  words if it has a synonym in the keywords which will count in that specific key'''
 
-        compare = {key: 0 for key in data.keys()} # Will compare matches it got
+        compare: dict = {key: 0 for key in data.keys()} # Will start at 0 and For every key/question in data
         
-        input_words = set(self.sentence.split())
+        input_words = set(self.sentence.split()) # Converted to set to efficiently handles matching, and split keys in the data
+                                                # input_words is a set of word per word from self.sentence/from the input of the user
         for key, responses in data.items():
-            key_words = set(key.split())
-            compare[key] = len(input_words & key_words)  # Count matching words
+            key_words = set(key.split()) # key_word is a set of word per word from each key in data
+            compare[key] = len(input_words & key_words)  # This will match how many words match in input_words & key_words using &/ intersection operator
 
-        highest_match = max(compare.values())
-        if highest_match == 0:
+        highest_match:int = max(compare.values()) # Will look from the values from compare and will find the largest value
+        
+        match_percentage: float = float(highest_match/len(input_words))*100
+
+        if highest_match == 0: # No match
             print("chatbot name: I'm sorry, I don't understand that.")
             return
 
-        matching_keys = [k for k, v in compare.items() if v == highest_match]
-
-        if len(matching_keys) == 1:
-            print(f"chatbot name: {data[matching_keys[0]][0]}")
-        else:
-            # If their is a tie
-            best_match = max(
-                matching_keys,
-                key=lambda k: len(input_words & set(k.split())) / no_of_words[k]
-            )
-            print(f"chatbot name: {data[best_match][0]}")
-
+        if match_percentage >= 80: 
+            matching_keys = [k for k, v in compare.items() if v == highest_match] # Will look for the keys in compare that will match the value of highest_match
+            if len(matching_keys) == 1: # If it is only 1 match
+                print(f"chatbot name: {data[matching_keys[0]][0]}")
+            else:
+                # If their is a tie
+                best_match = max(matching_keys, key=lambda k: len(input_words & set(k.split())) / no_of_words[k])
+                print(f"chatbot name: {data[best_match][0]}")
+        else: # Insufficient match, percentage of match is not sufficient
+            print("chatbot: Your question is unclear, can you rephrase and ask it again")
 
 def validation(sentence: str)->str: # To suggest the most simillar word to the wrongly spelt word
     spell = SpellChecker()
