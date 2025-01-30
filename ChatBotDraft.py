@@ -33,7 +33,7 @@ class chatBotData:
         if len(matching_keys) == 1: # If it is only 1 match
             print(f"chatbot name: {data[matching_keys[0]]}")
         else:
-            # If their is a tie
+            # If their is a tie, the first match will be picked
             print(f"chatbot name: {data[matching_keys[0]]}")
 
 def validation(sentence: str)->str: # To suggest the most simillar word to the wrongly spelt word
