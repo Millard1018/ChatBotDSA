@@ -38,18 +38,20 @@ def user_input_fil()->str:
     question: str = input("user: ").upper().strip()
     if question == 'EXIT':
         return 'EXIT'
-    try:
-        translation = GoogleTranslator(source='tl', target='en').translate(question)
-    except Exception as e:
-        print(f"Error in translation: {e}")
-    return validation(translation)
+    while True:
+        try:
+            translation = GoogleTranslator(source='tl', target='en').translate(question)
+            translation.upper().strip()
+            return validation(translation)
+        except Exception as e:
+            print(f"Nagkaroon ng error sa pag-translate: {e}")
+            question = input("Ilagay muli ang tanong: ").upper()
 
 def reply(sentence: str)->None:
     data = {
        "HOW ARE YOU": "Fine, Thank you for asking!"
         #We can add more reply and question
     }
-
     compare: dict = {key: 0 for key in data.keys()} # Will start at 0 and For every key/question in data
         
     input_words = set(sentence.split()) # Converted to set to efficiently handles matching, and split keys in the data
