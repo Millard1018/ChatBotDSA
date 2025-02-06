@@ -8,7 +8,7 @@ def validation(sentence: str)->str: # To suggest the most simillar word to the w
     return " ".join(corrected_words)
 
 def main_introduction()->str:
-    print("Chatbot Name")
+    print("City of Santa Rosa Tourist HelpDesk Chatbot")
     language: str = input("chatbot name: Pumili ng wika na nais | Choose your preferred language: Filipino or English: ").upper()
     functions: dict = {"FILIPINO": fil_introuction, "ENGLISH": en_introduction}
     while language not in functions:
@@ -20,12 +20,12 @@ def main_introduction()->str:
         
 def en_introduction()->None:
     print("chatbot name: Hi my name is -----")
-    print("chatbot name: You can ask me anything about the province of Laguna")
+    print("chatbot name: You can ask me anything about the city of Santa Rosa")
     print("chatbot name: Enter 'exit' to exit the program")
 
 def fil_introuction()->None:
-    print("\nchatbot name: Kamusta ang pangalan ay -----")
-    print("chatbot name: Pwede mo kong tanungin ng tungkol sa lalawigan Laguna")
+    print("\nchatbot name: Kamusta ang pangalan ko ay -----")
+    print("chatbot name: Pwede mo kong tanungin ng tungkol sa bayan ng Santa Rosa")
     print("chatbot name: I-type lamang ang 'exit' upang matapos ang program")
 
 def user_input_EN()->str:
@@ -47,11 +47,21 @@ def user_input_fil()->str:
             print(f"Nagkaroon ng error sa pag-translate: {e}")
             question = input("Ilagay muli ang tanong: ").upper()
 
-def reply(sentence: str)->None:
+def en_data()->dict:
     data = {
        "HOW ARE YOU": "Fine, Thank you for asking!"
-        #We can add more reply and question
+        #We can add more reply and question 
     }
+    return data
+
+def fil_data()->dict:
+    data = {
+        "HOW ARE YOU": "Mabuti, Salamat sa pagtanong!"
+        # Add english question for the key and fil answer for the value
+    }
+    return data
+
+def reply(sentence: str, data: dict)->None:
     compare: dict = {key: 0 for key in data.keys()} # Will start at 0 and For every key/question in data
         
     input_words = set(sentence.split()) # Converted to set to efficiently handles matching, and split keys in the data
@@ -78,12 +88,14 @@ def main()->None:
     while True:
         if language == "FILIPINO" :
             sentence = user_input_fil()
+            data = fil_data()
         else:
             sentence = user_input_EN()
+            data = en_data()
         if sentence == 'EXIT':
             print("chatbot name: Thank you for chatting with me!")
             break
-        reply(sentence)
+        reply(sentence, data)
 
 if __name__ == '__main__':
     main()
